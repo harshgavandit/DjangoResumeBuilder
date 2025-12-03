@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+               * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+        }
+
+        body {
+            position: relative;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            color: #0f172a;
+            overflow-x: hidden;
+        }
+
+        /* ===== Animated Background with Image + Gradient Overlay ===== */
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            background-image:
+                linear-gradient(135deg, rgba(37, 99, 235, 0.7), rgba(236, 72, 153, 0.7)),
+                url("https://images.pexels.com/photos/196645/pexels-photo-196645.jpeg");
+            background-size: cover;
+            background-position: center;
+            filter: blur(1px);
+            transform: scale(1.03);
+        }
+
+        body::after {
+            /* subtle dark vignette for depth */
+            content: "";
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            background: radial-gradient(circle at top left, rgba(255, 255, 255, 0.2), transparent 55%),
+                        radial-gradient(circle at bottom right, rgba(15, 23, 42, 0.5), transparent 55%);
+            mix-blend-mode: soft-light;
+        }
+
+        /* ===== Page Heading ===== */
+        h1 {
+            text-align: center;
+            font-size: 2.6rem;
+            color: #f9fafb;
+            margin: 1.5rem 0 1rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            text-shadow: 0 6px 18px rgba(15, 23, 42, 0.8);
+        }
+
+        h1 span {
+            color: #facc15;
+        }
+
+        /* ===== Main Card ===== */
+        .form-container {
+            max-width: 950px;
+            margin: 0 auto 3rem;
+            padding: 2.3rem 2.4rem 2.7rem;
+            background: rgba(255, 255, 255, 0.93);
+            border-radius: 1.4rem;
+            box-shadow:
+                0 22px 60px rgba(15, 23, 42, 0.55),
+                0 0 0 1px rgba(148, 163, 184, 0.6);
+            backdrop-filter: blur(12px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* decorative light blobs */
+        .form-container::before,
+        .form-container::after {
+            content: "";
+            position: absolute;
+            border-radius: 999px;
+            filter: blur(40px);
+            opacity: 0.7;
+            z-index: -1;
+        }
+
+        .form-container::before {
+            width: 180px;
+            height: 180px;
+            top: -40px;
+            right: -40px;
+            background: rgba(59, 130, 246, 0.5);
+        }
+
+        .form-container::after {
+            width: 220px;
+            height: 220px;
+            bottom: -60px;
+            left: -30px;
+            background: rgba(236, 72, 153, 0.55);
+        }
+
+        /* slight hover lift for the whole card */
+        .form-container:hover {
+            transform: translateY(-4px);
+            box-shadow:
+                0 28px 80px rgba(15, 23, 42, 0.7),
+                0 0 0 1px rgba(129, 140, 248, 0.9);
+            transition: transform 0.2s ease-out, box-shadow 0.25s ease-out;
+        }
+
+        .form-container h2 {
+            font-size: 1.35rem;
+            margin-bottom: 0.8rem;
+            color: #111827;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .form-container h2::before {
+            content: "";
+            width: 6px;
+            height: 24px;
+            border-radius: 999px;
+            background: linear-gradient(180deg, #3b82f6, #ec4899);
+        }
+
+        .section {
+            margin-top: 1.8rem;
+            padding-top: 1.2rem;
+            border-top: 1px dashed rgba(148, 163, 184, 0.7);
+        }
+
+        /* ===== Form Layout ===== */
+        form {
+            width: 100%;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            font-size: 0.95rem;
+            margin-bottom: 0.25rem;
+            color: #374151;
+        }
+
+        .form-group small {
+            font-size: 0.78rem;
+            color: #9ca3af;
+        }
+
+        .form-group input[type="text"],
+        .form-group textarea {
+            width: 100%;
+            padding: 0.7rem 0.8rem;
+            border-radius: 0.75rem;
+            border: 1px solid rgba(156, 163, 175, 0.8);
+            background: linear-gradient(135deg, #f9fafb, #eef2ff);
+            font-size: 0.95rem;
+            transition:
+                border 0.2s,
+                box-shadow 0.2s,
+                background 0.2s,
+                transform 0.1s;
+        }
+
+        .form-group textarea {
+            height: 120px;
+            resize: vertical;
+        }
+
+        .form-group input:hover,
+        .form-group textarea:hover {
+            border-color: #6366f1;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #2563eb;
+            background: #ffffff;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
+            transform: translateY(-1px);
+        }
+
+        /* ===== Multi-input rows (skills / education / languages etc.) ===== */
+        .om,
+        .ed,
+        .com {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+        }
+
+        .om input,
+        .ed .form-group input,
+        .com .form-group input {
+            flex: 1;
+            min-width: 150px;
+        }
+
+        .op {
+            margin-top: 0.4rem;
+            font-size: 0.8rem;
+            color: #6b7280;
+        }
+
+        .section-title {
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 0.2rem;
+        }
+
+        .section-subtitle {
+            font-size: 0.82rem;
+            color: #9ca3af;
+            margin-bottom: 0.5rem;
+        }
+
+        /* ===== Primary Button with Hover Effects ===== */
+        .btn1 {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+            margin: 2.2rem auto 0;
+            padding: 0.85rem 2.8rem;
+            font-size: 1rem;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            border-radius: 999px;
+            border: none;
+            text-transform: uppercase;
+            background: linear-gradient(135deg, #4f46e5, #ec4899, #f97316);
+            background-size: 200% 200%;
+            color: #ffffff;
+            cursor: pointer;
+            box-shadow: 0 14px 35px rgba(15, 23, 42, 0.75);
+            transition:
+                transform 0.13s ease-out,
+                box-shadow 0.18s ease-out,
+                background-position 0.35s ease-out,
+                filter 0.18s;
+        }
+
+        /* glowing ring around button */
+        .btn1::before {
+            content: "";
+            position: absolute;
+            inset: -3px;
+            border-radius: inherit;
+            border: 2px solid rgba(251, 191, 36, 0.45);
+            opacity: 0;
+            transition: opacity 0.2s ease-out;
+        }
+
+        /* shining highlight */
+        .btn1::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -40%;
+            width: 40%;
+            height: 100%;
+            transform: skewX(-25deg);
+            background: linear-gradient(
+                to right,
+                rgba(255, 255, 255, 0.1),
+                rgba(255, 255, 255, 0.7),
+                rgba(255, 255, 255, 0.1)
+            );
+            opacity: 0;
+            transition: opacity 0.2s, transform 0.5s ease-out;
+        }
+
+        .btn1:hover {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow:
+                0 18px 45px rgba(15, 23, 42, 0.9),
+                0 0 25px rgba(59, 130, 246, 0.8);
+            background-position: 100% 0%;
+            filter: brightness(1.05);
+        }
+
+        .btn1:hover::before {
+            opacity: 1;
+        }
+
+        .btn1:hover::after {
+            opacity: 1;
+            transform: translateX(260%) skewX(-25deg);
+        }
+
+        .btn1:active {
+            transform: translateY(0) scale(0.99);
+            box-shadow: 0 10px 26px rgba(15, 23, 42, 0.9);
+        }
+
+        /* Optional: little arrow icon using pseudo-element if you like */
+        .btn1 span {
+            font-size: 1.1rem;
+        }
+
+        /* ===== Utility Classes ===== */
+        .text-center { text-align: center; }
+        .mt-1 { margin-top: 0.5rem; }
+        .mt-2 { margin-top: 1rem; }
+        .mt-3 { margin-top: 1.5rem; }
+        .mb-1 { margin-bottom: 0.5rem; }
+        .mb-2 { margin-bottom: 1rem; }
+        .mb-3 { margin-bottom: 1.5rem; }
+
+        /* ===== Responsive ===== */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.1rem;
+                padding: 0 0.7rem;
+            }
+
+            .form-container {
+                margin: 0 0.8rem 2.5rem;
+                padding: 1.7rem 1.3rem 2.1rem;
+            }
+
+            .om,
+            .ed,
+            .com {
+                flex-direction: column;
+            }
+
+            .btn1 {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+        }
+
+        /* You can add more styles as needed */
+    </style>
+</head>
+
+<body>
+    <h1 style="text-align: center; color:red; font-size:40px; ">Simple Resume Builder</h1>
+
+    <form action="{% url 'resume' %}" method="post">
+        {% csrf_token %}
+
+
+        <!-- ===================PERSONAL INFORMATION====================== -->
+
+        <div class="form-container">
+            <h2>Personal Information</h2>
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name">
+            </div>
+            <div class="form-group">
+                <label for="name">About:</label>
+                <input type="text" id="name" name="about">
+            </div>
+            <div class="form-group">
+                <label for="age">Age:</label>
+                <input type="text" id="age" name="age">
+            </div>
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="text" id="email" name="email">
+            </div>
+            <div class="form-group">
+                <label for="phone">Phone:</label>
+                <input type="text" id="phone" name="phone">
+            </div>
+            <div class="form-group ">
+                <label for="skills">Skills:</label>
+                <div class="om">
+                    <input type="text" id="skills" name="skill1">
+                    <input type="text" id="skills" name="skill2">
+                    <input type="text" id="skills" name="skill3">
+                    <input type="text" id="skills" name="skill4">
+                    <input type="text" id="skills" name="skill5">
+                </div>
+            </div>
+
+                <!-- =====================EDUCATION SECTION ================== -->
+
+                 <!-- -----EDUCATION 1----- -->
+                <div class="form-group">
+                    <label for="education1">Education 1:</label>
+                </div>
+                <div class="ed">
+                    <div class="form-group">
+                        <label for="degree1">Degree :</label>
+                        <input type="text" id="degree1" name="degree1">
+                    </div>
+                    <div class="form-group">
+                        <label for="college1">College :</label>
+                        <input type="text" id="college1" name="college1">
+                    </div>
+                    <div class="form-group">
+                        <label for="year1">Year :</label>
+                        <input type="text" id="year1" name="year1">
+                    </div>
+                </div>
+
+                    <!-- -----EDUCATION 2----- -->
+                <div class="form-group">
+                    <label for="education1">Education 2:</label>
+                </div>
+                <div class="ed">
+                    <div class="form-group">
+                        <label for="degree1">Degree:</label>
+                        <input type="text" id="degree1" name="degree2">
+                    </div>
+                    <div class="form-group">
+                        <label for="college1">College:</label>
+                        <input type="text" id="college1" name="college2">
+                    </div>
+                    <div class="form-group">
+                        <label for="year1">Year:</label>
+                        <input type="text" id="year1" name="year2">
+                    </div>
+                </div>
+
+                    <!-- -----EDUCATION 3----- -->
+                <div class="form-group">
+                    <label for="education1">Education 3:</label>
+                </div>
+                <div class="ed">
+                    <div class="form-group">
+                        <label for="degree1">Degree:</label>
+                        <input type="text" id="degree1" name="degree3">
+                    </div>
+                    <div class="form-group">
+                        <label for="college1">College:</label>
+                        <input type="text" id="college1" name="college3">
+                    </div>
+                    <div class="form-group">
+                        <label for="year1">Year:</label>
+                        <input type="text" id="year1" name="year3">
+                    </div>
+                </div>
+
+                <!-- ================LANGUAGAES======================= -->
+
+                <div class="form-group ">
+                    <label for="skills">Languages :</label>
+                    <div class="om">
+                        <input type="text" id="skills" name="lang1">
+                        <input type="text" id="skills" name="lang2">
+                        <input type="text" id="skills" name="lang3">
+                    </div>
+                </div>
+
+                <!-- =====================PROJECT SECTION=================== -->
+
+                <!-- PROJECT 1 -->
+
+                <div class="form-group">
+                    <label for="experience1">Project 1 :</label>
+                </div>
+                <div class="com">
+                    <div class="form-group ">
+                        <label for="company1">Project Title :</label>
+                        <input type="text" id="company1" name="project1">
+                    </div>
+                    <div class="form-group">
+                        <label for="post1">Duration :</label>
+                        <input type="text" id="post1" name="durat1">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="description1">Description :</label>
+                    <input type="text" id="duration1" name="desc1">
+                </div>
+
+                <!-- PROJECT 2 -->
+
+                <div class="form-group">
+                    <label for="experience1">Project 2 :</label>
+                    
+                </div>
+                <div class="com">
+                    <div class="form-group ">
+                        <label for="company1">Project Title :</label>
+                        <input type="text" id="company1" name="project2">
+                    </div>
+                    <div class="form-group">
+                        <label for="post1">Duration :</label>
+                        <input type="text" id="post1" name="durat2">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="description1">Description :</label>
+                    <input type="text" id="duration1" name="desc2">
+                </div>
+
+                <!-- =======================EXPERICNECE SECTION===================== -->
+                <div class="form-group">
+                    <label for="experience1">Experience 1:</label>
+                </div>
+                <div class="com">
+                    <div class="form-group ">
+                        <label for="company1">Company Name :</label>
+                        <input type="text" id="company1" name="company1">
+                    </div>
+                    <div class="form-group">
+                        <label for="post1">Post :</label>
+                        <input type="text" id="post1" name="post1">
+                    </div>
+                    <div class="form-group">
+                        <label for="duration1">Duration :</label>
+                        <input type="text" id="duration1" name="duration1">
+                    </div>
+                </div>
+                <div class="form-group ">
+                    <label for="description1">Description :</label>
+                    <div class="op">
+                        <input type="text" id="duration1" name="lin11">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="experience1">Experience 2:</label>
+                </div>
+                <div class="com">
+                    <div class="form-group ">
+                        <label for="company1">Company Name :</label>
+                        <input type="text" id="company1" name="company2">
+                    </div>
+                    <div class="form-group">
+                        <label for="post1">Post :</label>
+                        <input type="text" id="post1" name="post2">
+                    </div>
+                    <div class="form-group">
+                        <label for="duration1">Duration :</label>
+                        <input type="text" id="duration1" name="duration2">
+
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="description1">Description :</label>
+                    <input type="text" id="duration1" name="lin21">
+                </div>
+
+                <!-- ==========================ACHIEVEMENT================= -->
+
+                <div class="form-group">
+                    <label for="experience1">Achievement :</label>
+                </div>
+                <div class="form-group ">
+                    <label for="company1">First :</label>
+                    <input type="text" id="company1" name="ach1">
+                </div>
+                <div class="form-group">
+                    <label for="post1">Second :</label>
+                    <input type="text" id="post1" name="ach2">
+                </div>
+                <div class="form-group">
+                    <label for="duration1">Third :</label>
+                    <input type="text" id="duration1" name="ach3">
+                </div>
+                <button type="submit" class=" btn1 ">Submit</button>
+            </div>
+    </form>
+</body>
+
+</html>

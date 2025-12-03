@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+            * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        }
+
+        html,
+        body {
+            height: 100%;
+        }
+
+        body {
+            position: relative;
+            color: #0f172a;
+            overflow-x: hidden;
+        }
+
+        /* ===== Animated Background (same style as index.html) ===== */
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            background-image:
+                linear-gradient(135deg, rgba(37, 99, 235, 0.7), rgba(236, 72, 153, 0.7)),
+                url("https://images.pexels.com/photos/196645/pexels-photo-196645.jpeg");
+            background-size: cover;
+            background-position: center;
+            filter: blur(1px);
+            transform: scale(1.03);
+        }
+
+        body::after {
+            content: "";
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            background:
+                radial-gradient(circle at top left, rgba(255, 255, 255, 0.2), transparent 55%),
+                radial-gradient(circle at bottom right, rgba(15, 23, 42, 0.5), transparent 55%);
+            mix-blend-mode: soft-light;
+        }
+
+        /* ===== Page Title ===== */
+        .page-title {
+            text-align: center;
+            font-size: 2.4rem;
+            color: #f9fafb;
+            margin: 1.5rem 0 1rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            text-shadow: 0 6px 18px rgba(15, 23, 42, 0.8);
+        }
+
+        .page-title span {
+            color: #facc15;
+        }
+
+        /* ===== Resume Container (PDF area) ===== */
+        .container {
+            max-width: 900px;
+            margin: 0 auto 2.5rem;
+            padding: 2rem 2.4rem;
+            background: rgba(255, 255, 255, 0.94);
+            border-radius: 1.3rem;
+            box-shadow:
+                0 22px 60px rgba(15, 23, 42, 0.55),
+                0 0 0 1px rgba(148, 163, 184, 0.6);
+            backdrop-filter: blur(12px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .container::before,
+        .container::after {
+            content: "";
+            position: absolute;
+            border-radius: 999px;
+            filter: blur(40px);
+            opacity: 0.6;
+            z-index: -1;
+        }
+
+        .container::before {
+            width: 180px;
+            height: 180px;
+            top: -40px;
+            right: -40px;
+            background: rgba(59, 130, 246, 0.5);
+        }
+
+        .container::after {
+            width: 220px;
+            height: 220px;
+            bottom: -60px;
+            left: -30px;
+            background: rgba(236, 72, 153, 0.55);
+        }
+
+        .container:hover {
+            transform: translateY(-4px);
+            box-shadow:
+                0 28px 80px rgba(15, 23, 42, 0.7),
+                0 0 0 1px rgba(129, 140, 248, 0.9);
+            transition: transform 0.2s ease-out, box-shadow 0.25s ease-out;
+        }
+
+        /* ===== Header (Name + About) ===== */
+        .header {
+            text-align: center;
+            margin-bottom: 1.8rem;
+        }
+
+        .header h1 {
+            margin-bottom: 0.4rem;
+            font-size: 2rem;
+            color: #111827;
+        }
+
+        .header h3 {
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: #6b7280;
+            letter-spacing: 0.14em;
+        }
+
+        /* ===== Main Layout ===== */
+        .main {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.8rem;
+        }
+
+        .left,
+        .right {
+            flex: 1 1 280px;
+        }
+
+        .left {
+            padding-right: 0.8rem;
+            border-right: 1px dashed rgba(148, 163, 184, 0.8);
+        }
+
+        .right {
+            padding-left: 0.8rem;
+        }
+
+        .left p,
+        .right p {
+            line-height: 1.5;
+            font-size: 0.95rem;
+            color: #374151;
+            margin-bottom: 0.25rem;
+        }
+
+        ul {
+            padding-left: 1.1rem;
+            margin-bottom: 0.6rem;
+        }
+
+        ul li {
+            line-height: 1.5;
+            font-size: 0.95rem;
+            color: #374151;
+            margin-bottom: 0.15rem;
+        }
+
+        /* ===== Section Headings ===== */
+        h2 {
+            padding: 0.2rem 0;
+            color: #111827;
+            margin: 1.6rem 0 0.6rem;
+            font-size: 1.1rem;
+            position: relative;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+        }
+
+        h2::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: -4px;
+            width: 55px;
+            height: 3px;
+            border-radius: 999px;
+            background: linear-gradient(90deg, #3b82f6, #ec4899);
+        }
+
+        .right h3,
+        .left h3 {
+            margin-bottom: 0.25rem;
+            font-size: 1rem;
+            color: #111827;
+        }
+
+        /* ===== Label Highlights ===== */
+        strong {
+            color: #111827;
+        }
+
+        /* ===== Download Button (same feel as index.html) ===== */
+        .btn1 {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+            margin: 0 auto 2.5rem;
+            padding: 0.85rem 2.7rem;
+            font-size: 0.98rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            border-radius: 999px;
+            border: none;
+            text-transform: uppercase;
+            background: linear-gradient(135deg, #4f46e5, #ec4899, #f97316);
+            background-size: 200% 200%;
+            color: #ffffff;
+            cursor: pointer;
+            box-shadow: 0 14px 35px rgba(15, 23, 42, 0.75);
+            transition:
+                transform 0.13s ease-out,
+                box-shadow 0.18s ease-out,
+                background-position 0.35s ease-out,
+                filter 0.18s;
+            display: block;
+        }
+
+        .btn1::before {
+            content: "";
+            position: absolute;
+            inset: -3px;
+            border-radius: inherit;
+            border: 2px solid rgba(251, 191, 36, 0.45);
+            opacity: 0;
+            transition: opacity 0.2s ease-out;
+        }
+
+        .btn1::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -40%;
+            width: 40%;
+            height: 100%;
+            transform: skewX(-25deg);
+            background: linear-gradient(
+                to right,
+                rgba(255, 255, 255, 0.1),
+                rgba(255, 255, 255, 0.7),
+                rgba(255, 255, 255, 0.1)
+            );
+            opacity: 0;
+            transition: opacity 0.2s, transform 0.5s ease-out;
+        }
+
+        .btn1:hover {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow:
+                0 18px 45px rgba(15, 23, 42, 0.9),
+                0 0 25px rgba(59, 130, 246, 0.8);
+            background-position: 100% 0%;
+            filter: brightness(1.05);
+        }
+
+        .btn1:hover::before {
+            opacity: 1;
+        }
+
+        .btn1:hover::after {
+            opacity: 1;
+            transform: translateX(260%) skewX(-25deg);
+        }
+
+        .btn1:active {
+            transform: translateY(0) scale(0.99);
+            box-shadow: 0 10px 26px rgba(15, 23, 42, 0.9);
+        }
+
+        .btn-wrapper {
+            text-align: center;
+        }
+
+        /* ===== Responsive ===== */
+        @media (max-width: 768px) {
+            .page-title {
+                font-size: 2.1rem;
+                padding: 0 0.5rem;
+            }
+
+            .container {
+                margin: 0 0.9rem 2.3rem;
+                padding: 1.7rem 1.4rem;
+            }
+
+            .left {
+                border-right: none;
+                border-bottom: 1px dashed rgba(148, 163, 184, 0.8);
+                padding-right: 0;
+                padding-bottom: 1.4rem;
+                margin-bottom: 1.2rem;
+            }
+
+            .right {
+                padding-left: 0;
+            }
+
+            .main {
+                gap: 1.2rem;
+            }
+
+            .btn1 {
+                width: 85%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .page-title {
+                font-size: 1.9rem;
+            }
+
+            .btn1 {
+                width: 95%;
+            }
+        }
+
+</style>
+
+<body>
+    <h1 style="text-align: center; color:red; font-size:40px; ">Resume Generated</h1>
+    <div id="mn" class="container">
+        <div class="header">
+            <br><br>
+            <h1>{{name}}</h1>
+            <h3>{{about}}</h3>
+        </div>
+        <div class="main">
+            <div class="left">
+                <h2>Personal Information</h2>
+                <p><strong>Name :</strong>{{name}}</p>
+                <p><strong>Age :</strong>{{age}} </p>
+                <p><strong>Email</strong> {{email}}</p>
+                <p><strong>Phone</strong> +91-{{phone}}</p>
+                <h2>Skills</h2>
+                <ul>
+                    <li>{{skill1}}</li>
+                    <li>{{skill2}}</li>
+                    <li>{{skill3}}</li>
+                    <li>{{skill4}}</li>
+                    <li>{{skill5}}</li>
+                </ul>
+                <h2>Education</h2>
+                <h3>{{degree1}} </h3>
+                <p>{{college1}}</p>
+                <p>{{year1}}</p>
+                <br>
+                <h3>{{degree2}} </h3>
+                <p>{{college2}}</p>
+                <p> Year : {{year2}}</p>
+                <h3>{{degre3}} </h3>
+                <p>{{college3}}</p>
+                <p> Year : {{year3}}</p>
+                <h2>Languages</h2>
+                <ul>
+                    <li>{{lang1}}</li>
+                    <li>{{lang2}}</li>
+                    <li>{{lang3}}</li>
+                </ul>
+            </div>
+            <div class="right">
+                <h2>Projects</h2>
+                <h3>{{project1}}</h3>
+                <p><strong>Duration :</strong> {{durat1}}</p>
+                <ul>
+                    <li>{{desc1}}</li>
+                </ul>
+                <br>
+                <h3>{{project2}}</h3>
+                <p><strong>Duration :</strong> {{durat2}}</p>
+                <ul>
+                    <li>{{desc2}}</li>
+                </ul>
+                <h2>Work Experinece</h2>
+                <h3>{{company1}}</h3>
+                <p><strong>Position:</strong> {{post1}}</p>
+                <p><strong>Duration :</strong> {{duration1}}</p>
+                <ul>
+                    <li>{{lin11}}</li>
+                </ul>
+                <br><br>
+                <h3>{{company2}}</h3>
+                <p><strong>Position: </strong>{{post2}}</p>
+                <p><strong>Duration</strong> {{duration2}}</p>
+                <ul>
+                    <li>{{lin21}}</li>
+                </ul>
+                <h2>Achievements :</h2>
+                <ul>
+                    <li>{{ach1}}</li>
+                    <li>{{ach2}}</li>
+                    <li>{{ach3}}</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <button onclick="generatePDF('mn')" type="button" class="btn1">Download PDF</button>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.4.0/mammoth.browser.min.js"></script>
+    <script type="text/javascript">
+        function generatePDF(containerId) {
+            const container = document.getElementById(containerId);
+
+            // Download as PDF
+            const pdfOptions = {
+                margin: 10,
+                filename: 'resume.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2 },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+
+            html2pdf()
+                .from(container)
+                .set(pdfOptions)
+                .outputPdf()
+                .then(function (pdf) {
+                    const pdfBlob = new Blob([pdf], { type: 'application/pdf' });
+                    const pdfUrl = URL.createObjectURL(pdfBlob);
+                    const pdfLink = document.createElement('a');
+                    pdfLink.href = pdfUrl;
+                    pdfLink.download = 'resume.pdf';
+                    pdfLink.click();
+                });
+        } 
+    </script>
+
+</body>
+
+</html>
